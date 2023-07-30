@@ -1,4 +1,3 @@
-import { TramSharp } from '@mui/icons-material'
 import {
   Avatar,
   Box,
@@ -9,8 +8,10 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  useMediaQuery,
   useTheme,
 } from '@mui/material'
+import { useDrawerConstext } from '../../contexts'
 
 interface IAppMenuLateralProps {
   children: React.ReactNode
@@ -18,9 +19,17 @@ interface IAppMenuLateralProps {
 
 export const MenuLateral: React.FC<IAppMenuLateralProps> = ({ children }) => {
   const theme = useTheme()
+  const smDown = useMediaQuery(theme.breakpoints.down('sm'))
+
+  const { isDrawerOpen, toggleDrawerOpen } = useDrawerConstext()
+
   return (
     <>
-      <Drawer variant="permanent">
+      <Drawer
+        open={isDrawerOpen}
+        variant={smDown ? 'temporary' : 'permanent'}
+        onClose={toggleDrawerOpen}
+      >
         <Box
           width={theme.spacing(28)}
           height="100%"
@@ -53,7 +62,10 @@ export const MenuLateral: React.FC<IAppMenuLateralProps> = ({ children }) => {
           </Box>
         </Box>
       </Drawer>
-      <Box height="100vh" marginLeft={theme.spacing(28)}>
+      <Box
+        height="100vh"
+        marginLeft={smDown ? theme.spacing(0) : theme.spacing(28)}
+      >
         {children}
       </Box>
     </>
